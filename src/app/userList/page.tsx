@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 
@@ -10,11 +11,17 @@ interface User {
   age: number;
 }
 const UserList: React.FC = () => {
+  const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
-  const [Loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
-    axios.get<{ users: User[] }>("/api/user").then((res) => {
+    axios.get<{ users: User[]; status: number }>("/api/user").then((res) => {
       setUsers(res.data.users);
+
+      if (res.data.status === 500) {
+        alert("Feched Data Error");
+        router.push("/");
+      }
     });
   }, []);
 
@@ -26,6 +33,7 @@ const UserList: React.FC = () => {
       console.error("Error deleting user:", error);
     }
   };
+  const length: number = users?.length || 0;
 
   return (
     <>
@@ -46,7 +54,7 @@ const UserList: React.FC = () => {
             <th scope="col"></th>
           </tr>
         </thead>
-        {users.length > 0 ? (
+        {length > 0 ? (
           users.map((user, index) => (
             <tr key={user._id}>
               <th scope="row">{index + 1}</th>

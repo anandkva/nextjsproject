@@ -2,7 +2,7 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 interface User {
   username: string;
