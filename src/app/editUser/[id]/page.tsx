@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -54,7 +54,10 @@ const EditUserPage: React.FC<PageProps> = ({ params }) => {
     }));
   };
 
-  const handleUpdateUser = async () => {
+  const handleUpdateUser = async (
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
     try {
       await axios
         .put(`/api/user`, {
@@ -79,7 +82,7 @@ const EditUserPage: React.FC<PageProps> = ({ params }) => {
       <br />
       <h1>Edit User</h1>
 
-      <form>
+      <form onSubmit={handleUpdateUser}>
         <div className="mb-3">
           <label className="form-label" htmlFor="username">
             Username:
@@ -120,7 +123,7 @@ const EditUserPage: React.FC<PageProps> = ({ params }) => {
           />
         </div>
         <br />
-        <button className="btn btn-primary" onClick={handleUpdateUser}>
+        <button className="btn btn-primary" type="submit">
           Update User
         </button>
       </form>

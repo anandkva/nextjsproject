@@ -10,7 +10,7 @@ const Navigation = () => {
           <Link href="/" className="navbar-brand">
             GUVI
           </Link>
-          <div className="collapse navbar-collapse float-right" id="navbarNav">
+          <div className="collapse navbar-collapse float-right">
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link href="/" className="nav-link active" aria-current="page">

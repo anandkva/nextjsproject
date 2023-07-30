@@ -36,7 +36,7 @@ const UserList: React.FC = () => {
       </div>
 
       <table className="table table-striped">
-        <thead>
+        <thead className="thead-dark">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
