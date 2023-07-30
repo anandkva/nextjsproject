@@ -5,7 +5,7 @@ const Navigation = () => {
   return (
     <>
       <nav>
-        <label className="logo">GUVI</label>
+        <label className="logo"><Link href="/" style={{color: "white"}}>GUVI</Link></label>
         <ul>
           <li>
             <Link href="/">Home</Link>

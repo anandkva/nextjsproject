@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+
 interface User {
   _id: string;
   username: string;
@@ -10,6 +11,7 @@ interface User {
 }
 const UserList: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [Loading, setLoading] =useState<boolean>(true)
   useEffect(() => {
     axios.get<{ users: User[] }>("/api/user").then((res) => {
       setUsers(res.data.users);

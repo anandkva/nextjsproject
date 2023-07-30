@@ -10,6 +10,15 @@ interface User {
   age: number;
 }
 
+interface UserTwo {
+  user: {
+    _id: string;
+    username: string;
+    email: string;
+    age: number;
+  };
+}
+
 interface PageProps {
   params: { id: string };
 }
@@ -24,8 +33,8 @@ const EditUserPage: React.FC<PageProps> = ({ params }) => {
 
   const fetchUserDetails = async () => {
     try {
-      const response = await axios.get<User>(`/api/user/${params.id}`);
-      setFormData(response.data.user); // The response data is a single user object, not an array of users
+      const response = await axios.get<UserTwo>(`/api/user/${params.id}`);
+      setFormData(response.data.user);
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
