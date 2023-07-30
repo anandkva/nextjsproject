@@ -13,7 +13,7 @@ export const POST = async (request) => {
     const newUser = new Users({ username, email, age });
     const savedUser = await newUser.save();
 
-    return NextResponse.json({ users: savedUser });
+    return NextResponse.json({ users: savedUser, status: 200 });
   } catch (error) {
     if (error.code === 11000) {
       // Duplicate key error (email already exists)

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import axios, { AxiosResponse } from "axios";
 
 interface User {
@@ -11,13 +11,12 @@ interface User {
 }
 
 interface SuccessResponse {
-  message: string;
   users: User[];
   status: number;
 }
 
 const CreateUser: React.FC = () => {
-  // const router = useRouter();
+  const router = useRouter();
 
   const [formData, setFormData] = useState<User>({
     username: "",
@@ -39,20 +38,18 @@ const CreateUser: React.FC = () => {
   ): Promise<void> => {
     event.preventDefault();
     try {
-      const response: AxiosResponse<SuccessResponse> = await axios.post(
-        "/api/user",
-        formData
-      );
-      setFormData({
-        username: "",
-        email: "",
-        age: 0,
-      });
-      setResponseMessage(response.data.message);
+      await axios.post("/api/user", formData).then((response) => {
+        setFormData({
+          username: "",
+          email: "",
+          age: 0,
+        });
+        setResponseMessage(response.data.message);
 
-      // if (response?.status === 200) {
-      // router.push("/create"); // Now you can use router.push here
-      // }
+        if (response?.status === 200) {
+          router.push("/userList");
+        }
+      });
     } catch (error: any) {
       if (error.response?.message) {
         setResponseMessage(error.response.message);
@@ -63,12 +60,15 @@ const CreateUser: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Create User</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
+        <div className="mb-3">
+          <label className="form-label" htmlFor="username">
+            Username:
+          </label>
           <input
+            className="form-control"
             type="text"
             id="username"
             name="username"
@@ -77,8 +77,11 @@ const CreateUser: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label className="form-label" htmlFor="email">
+            Email:
+          </label>
           <input
+            className="form-control"
             type="email"
             id="email"
             name="email"
@@ -87,8 +90,11 @@ const CreateUser: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="age">Age:</label>
+          <label className="form-label" htmlFor="age">
+            Age:
+          </label>
           <input
+            className="form-control"
             type="number"
             id="age"
             name="age"
@@ -96,7 +102,8 @@ const CreateUser: React.FC = () => {
             onChange={handleInputChange}
           />
         </div>
-        <button type="submit">Create User</button>
+        <br />
+        <button className="btn btn-primary" type="submit">Create User</button>
       </form>
       {responseMessage && <p>{responseMessage}</p>}
     </div>

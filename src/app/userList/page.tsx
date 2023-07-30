@@ -11,7 +11,7 @@ interface User {
 }
 const UserList: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [Loading, setLoading] =useState<boolean>(true)
+  const [Loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     axios.get<{ users: User[] }>("/api/user").then((res) => {
       setUsers(res.data.users);
@@ -20,7 +20,7 @@ const UserList: React.FC = () => {
 
   const handleDeleteUser = async (userId: string) => {
     try {
-      await axios.delete(`/api/user`, { data: { id: userId }});
+      await axios.delete(`/api/user`, { data: { id: userId } });
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -29,28 +29,54 @@ const UserList: React.FC = () => {
 
   return (
     <>
-      <table>
+      <div className="mx-auto" style={{ margin: "auto", padding: "30px" }}>
+        <Link href="/create" className="btn btn-primary">
+          Add
+        </Link>
+      </div>
+
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th>
-              <Link href="/create">Add</Link>
-            </th>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Age</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
-        {users.length > 0 &&
-          users.map((user) => (
+        {users.length > 0 ? (
+          users.map((user, index) => (
             <tr key={user._id}>
-              <td>{user.username}</td>
+              <th scope="row">{index + 1}</th>
+              <th scope="row">{user.username}</th>
               <td>{user.email}</td>
               <td>{user.age}</td>
-              <td> <Link href={`/editUser/${user._id}`}>Edit</Link></td>
               <td>
-                <button onClick={() => handleDeleteUser(user._id)}>
+                {" "}
+                <Link
+                  className="btn btn-success"
+                  href={`/editUser/${user._id}`}
+                >
+                  Edit
+                </Link>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteUser(user._id)}
+                >
                   Delete
                 </button>
               </td>
             </tr>
-          ))}
+          ))
+        ) : (
+          <tr>
+            <th>Loading ... </th>
+          </tr>
+        )}
       </table>
     </>
   );
